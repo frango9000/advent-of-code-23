@@ -1,0 +1,19 @@
+name: Advent of Code 2023 Test
+
+on: [ push ]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+            -   name: Set up Java
+                uses: actions/setup-java@v3
+                with:
+                    java-version: '17'
+                    distribution: 'temurin'
+                    cache: 'gradle'
+            -   name: Test
+                uses: gradle/gradle-build-action@v2
+                with:
+                    arguments: test

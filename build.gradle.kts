@@ -6,10 +6,26 @@ repositories {
     mavenCentral()
 }
 
+dependencies {
+    testImplementation(kotlin("test"))
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = "17"
+}
+
 tasks {
     sourceSets {
         main {
-            java.srcDirs("src")
+            java.srcDirs("src/main")
+        }
+
+        test {
+            java.srcDirs("src/test")
         }
     }
 
