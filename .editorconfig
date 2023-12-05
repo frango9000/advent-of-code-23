@@ -16,3 +16,4 @@ trim_trailing_whitespace = false
 
 [*.txt]
 ij_formatter_enabled = false
+insert_final_newline = false
