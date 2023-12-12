@@ -23,24 +23,49 @@ mkdir -p src/main
 
 # Create the test and main files with the specified contents
 echo \
-"import org.junit.jupiter.api.Test
+"import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 
 class Day${day_number}Test {
-    private val testInput = listOf(
-        \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", \"8\", \"9\", \"10\"
-    )
+    @Nested
+    inner class TestInput {
+        private val testInput = listOf(
+            \"1\", \"2\", \"3\", \"4\", \"5\", \"6\", \"7\", \"8\", \"9\", \"10\"
+        )
 
-    @Test
-    fun part1() {
-        check(Day${day_number}.part1(testInput) == 10)
+        @Test
+        fun part1() {
+            check(Day${day_number}.part1(testInput) == 10)
+        }
+
+        @Test
+        fun part2() {
+            check(Day${day_number}.part2(testInput) == 10)
+        }
     }
 
-    @Test
-    fun part2() {
-        check(Day${day_number}.part2(testInput) == 10)
+    @Nested
+    inner class RealInput {
+        private var input: List<String> = listOf()
+
+        @BeforeEach
+        fun setup() = runBlocking {
+            if (input.isEmpty()) input = getInput($(echo $1 | sed 's/^0*//'))
+        }
+
+        @Test
+        fun part1() {
+            check(Day${day_number}.part1(input) == 10)
+        }
+
+        @Test
+        fun part2() {
+            check(Day${day_number}.part2(input) == 10)
+        }
     }
-}
-" > src/test/Day${day_number}Test.kt
+}" > src/test/Day${day_number}Test.kt
 
 echo \
 "fun main() {
@@ -59,8 +84,7 @@ class Day${day_number} {
             return input.size
         }
     }
-}
-" > src/main/Day${day_number}.kt
+}" > src/main/Day${day_number}.kt
 
 touch src/main/Day${day_number}.txt
 

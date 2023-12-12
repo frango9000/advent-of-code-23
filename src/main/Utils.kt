@@ -1,3 +1,6 @@
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import java.math.BigInteger
 import java.security.MessageDigest
 import kotlin.io.path.Path
@@ -24,4 +27,11 @@ fun Any?.println() = println(this)
 
 fun printTime(pre: String = "\n[", post: String = "]\n\n", function: () -> Unit) {
     print("$pre${measureNanoTime { function() }.toFloat() / 1000000}ms$post")
+}
+
+
+suspend fun fetchInputForDay(day: Int): List<String> {
+    return HttpClient().get("https://adventofcode.com/2023/day/$day/input") {
+        header("Cookie", "session=${System.getenv("SESSION_COOKIE")}")
+    }.call.response.bodyAsText().split("\n").filter { it.isNotEmpty() }
 }
