@@ -21,6 +21,6 @@ class Day03Test {
 
     @Test
     fun part2() {
-        check(Day03.part2(testInput) == 10)
+        check(Day03.part2(testInput) == 467835)
     }
 }

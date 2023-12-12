@@ -19,8 +19,7 @@ class Day03 {
                     }
                     if ((!isNum) && seq.isNotEmpty()) {
                         val capIndex = j - seq.length - 1
-                        val caps =
-                            (if (capIndex < 0) "" else suffixed[i][capIndex] + "") + suffixed[i][j]
+                        val caps = (if (capIndex < 0) "" else suffixed[i][capIndex] + "") + suffixed[i][j]
                         val above = if (i == 0) "" else suffixed[i - 1].substring(maxOf(0, capIndex), j + 1)
                         val below =
                             if (i == suffixed.lastIndex) "" else suffixed[i + 1].substring(maxOf(0, capIndex), j + 1)
@@ -37,7 +36,51 @@ class Day03 {
         }
 
         fun part2(input: List<String>): Int {
-            return input.size
+
+            val gears = input.withIndex().map { (i, line) ->
+                line.withIndex().filter { it.value == '*' }.map { (j) -> i to j }
+            }.flatten().associateWith { mutableListOf<Int>() }
+
+            val suffixed = input.map { """$it.""" }
+            for ((i, line) in suffixed.withIndex()) {
+                var seq = ""
+                for ((j, char) in line.withIndex()) {
+                    val isNum = char in '0' until '9' + 1
+                    if (isNum) {
+                        seq += char
+                    }
+                    if ((!isNum) && seq.isNotEmpty()) {
+
+                        val partNum = seq.toInt()
+                        val capIndex = j - seq.length - 1
+                        if (i != 0) {
+                            for (gearJ in maxOf(0, capIndex)..j) {
+                                if (suffixed[i - 1][gearJ] == '*') {
+                                    gears[i - 1 to gearJ]?.add(partNum)
+                                }
+                            }
+                        }
+                        if (capIndex >= 0 && suffixed[i][capIndex] == '*') {
+                            gears[i to capIndex]?.add(partNum)
+                        }
+                        if (suffixed[i][j] == '*') {
+                            gears[i to j]?.add(partNum)
+                        }
+                        if (i != suffixed.lastIndex) {
+                            for (gearJ in maxOf(0, capIndex)..j) {
+                                if (suffixed[i + 1][gearJ] == '*') {
+                                    gears[i + 1 to gearJ]?.add(partNum)
+                                }
+                            }
+                        }
+                        seq = ""
+                    }
+                }
+            }
+
+            return gears.filter { entry: Map.Entry<Pair<Int, Int>, MutableList<Int>> -> entry.value.size == 2 }
+                .map { (_, nums) -> nums[0] * nums[1] }.sum()
+
         }
     }
 }
