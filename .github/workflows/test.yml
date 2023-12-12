@@ -15,5 +15,7 @@ jobs:
                     cache: 'gradle'
             -   name: Test
                 uses: gradle/gradle-build-action@v2
+                env:
+                    SESSION_COOKIE: ${{ secrets.SESSION_COOKIE }}
                 with:
                     arguments: test
