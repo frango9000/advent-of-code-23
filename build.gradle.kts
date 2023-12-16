@@ -1,9 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.20"
-}
-
-repositories {
-    mavenCentral()
+    kotlin("jvm") version "1.9.21"
 }
 
 dependencies {
@@ -23,18 +19,18 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "17"
 }
 
-tasks {
-    sourceSets {
-        main {
-            java.srcDirs("src/main")
-        }
-
-        test {
-            java.srcDirs("src/test")
-        }
+sourceSets {
+    main {
+        java.srcDirs("src/main")
     }
 
+    test {
+        java.srcDirs("src/test")
+    }
+}
+
+tasks {
     wrapper {
-        gradleVersion = "8.4"
+        gradleVersion = "8.5"
     }
 }
