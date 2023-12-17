@@ -52,7 +52,7 @@ class Day${day_number}Test {
 
         @BeforeEach
         fun setup() = runBlocking {
-            if (input.isEmpty()) input = getInput($(echo $1 | sed 's/^0*//'))
+            if (input.isEmpty()) input = fetchInputForDay($(echo $1 | sed 's/^0*//'))
         }
 
         @Test
