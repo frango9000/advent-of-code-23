@@ -69,7 +69,7 @@ class Day05Test {
 
         @Test
         fun part2() {
-            check(Day05.part2(input) == 10L)
+            check(Day05.part2(input) == 26714516L)
         }
     }
 }
