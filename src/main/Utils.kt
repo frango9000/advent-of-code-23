@@ -35,3 +35,27 @@ suspend fun fetchInputForDay(day: Int): List<String> {
         header("Cookie", "session=${System.getenv("SESSION_COOKIE")}")
     }.call.response.bodyAsText().split("\n").filter { it.isNotEmpty() }
 }
+
+fun LongRange.intersectRange(that: LongRange): LongRange {
+    val start = maxOf(this.first, that.first)
+    val endInclusive = minOf(this.last, that.last)
+    return start..endInclusive
+}
+
+fun LongRange.offset(offsetBy: Long): LongRange {
+    return (this.first + offsetBy)..(this.last + offsetBy)
+}
+
+fun LongRange.subtract(that: LongRange): List<LongRange> {
+    val intersection = this.intersectRange(that)
+    val ranges = mutableListOf<LongRange>()
+
+    if (this.first < intersection.first) {
+        ranges.add(this.first until intersection.first)
+    }
+    if (intersection.last < this.last) {
+        ranges.add((intersection.last + 1)..this.last)
+    }
+
+    return ranges
+}
