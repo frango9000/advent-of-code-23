@@ -13,8 +13,13 @@ class Day05 {
             return locations.minOf { it.first }
         }
 
-        fun part2(input: List<String>): Int {
-            return input.size
+        fun part2(input: List<String>): Long {
+            val seeds = input[0].subSequence(7, input[0].length).split(" ").windowed(2, 2)
+                .map { it[0].toLong()..<(it[0].toLong() + it[1].toLong()) }
+
+            val almanac: MutableList<MutableList<AlmanacMapping>> = parseAlmanac(input)
+            val locations = mapSeedsToLocations(seeds, almanac)
+            return locations.minOf { it.first }
         }
 
         private fun mapSeedsToLocations(
