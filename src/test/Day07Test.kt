@@ -1,6 +1,5 @@
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -20,10 +19,9 @@ class Day07Test {
             check(Day07.part1(testInput) == 6440)
         }
 
-        @Disabled
         @Test
         fun part2() {
-            check(Day07.part2(testInput) == 5)
+            check(Day07.part2(testInput) == 5905)
         }
     }
 
@@ -41,10 +39,9 @@ class Day07Test {
             check(Day07.part1(input) == 250602641)
         }
 
-        @Disabled
         @Test
         fun part2() {
-            check(Day07.part2(input) == 10)
+            check(Day07.part2(input) == 251037509)
         }
     }
 }

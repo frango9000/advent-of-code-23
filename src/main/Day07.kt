@@ -7,22 +7,37 @@ fun main() {
 class Day07 {
     companion object {
         fun part1(input: List<String>): Int {
-            val hands = input.map { it.split(" ") }.map { CamelCardHand(it[0], it[1].toInt()) }.sorted()
+            val hands =
+                input.map { it.split(" ") }.map { CamelCardHand(it[0], it[1].toInt(), "23456789TJQKA", false) }.sorted()
             return hands.withIndex().sumOf { (index, hand) -> (index + 1) * hand.bid }
         }
 
         fun part2(input: List<String>): Int {
-            return input.size
+            val hands =
+                input.map { it.split(" ") }.map { CamelCardHand(it[0], it[1].toInt(), "J23456789TQKA", true) }.sorted()
+            return hands.withIndex().sumOf { (index, hand) -> (index + 1) * hand.bid }
         }
     }
 
-    class CamelCardHand(private val hand: String, val bid: Int) : Comparable<CamelCardHand> {
+
+    class CamelCardHand(private val hand: String, val bid: Int, private val ranks: String, wildJs: Boolean) :
+        Comparable<CamelCardHand> {
         private var type: CamelCardHandType = CamelCardHandType.HIGH_CARD
 
         init {
             val cardCount = mutableMapOf<Char, Int>()
             for (card in hand) {
                 cardCount[card] = cardCount.getOrDefault(card, 0) + 1
+            }
+            if (wildJs) {
+                val jacks = cardCount.getOrDefault('J', 0)
+                if (jacks > 0) {
+                    cardCount.remove('J')
+                    val maxEntry = cardCount.maxByOrNull { it.value }?.key
+                    if (maxEntry != null) {
+                        cardCount[maxEntry] = cardCount[maxEntry]!! + jacks
+                    } else cardCount['A'] = 5
+                }
             }
             type = when {
                 cardCount.size == 1 -> CamelCardHandType.FIVE_OF_A_KIND
@@ -39,9 +54,8 @@ class Day07 {
             return when {
                 this.type != other.type -> this.type.compareTo(other.type)
                 else -> {
-                    val order = "23456789TJQKA"
-                    val thisHand = this.hand.map { order.indexOf(it) }
-                    val otherHand = other.hand.map { order.indexOf(it) }
+                    val thisHand = this.hand.map { ranks.indexOf(it) }
+                    val otherHand = other.hand.map { ranks.indexOf(it) }
 
                     for (i in thisHand.indices) {
                         if (thisHand[i] != otherHand[i]) {
