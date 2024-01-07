@@ -33,7 +33,7 @@ fun printTime(pre: String = "\n[", post: String = "]\n\n", function: () -> Unit)
 suspend fun fetchInputForDay(day: Int): List<String> {
     return HttpClient().get("https://adventofcode.com/2023/day/$day/input") {
         header("Cookie", "session=${System.getenv("SESSION_COOKIE")}")
-    }.call.response.bodyAsText().split("\n").filter { it.isNotEmpty() }
+    }.call.response.bodyAsText().split("\n").dropLast(1)
 }
 
 fun LongRange.intersectRange(that: LongRange): LongRange {
